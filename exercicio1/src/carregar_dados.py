@@ -7,7 +7,7 @@ def load_data():
     val = []
     
     # carrega os dados presentes nos arquivos do diretorio em um dataframe
-    for p, _, files in os.walk(os.path.abspath(diretorio)):
+    for _, _, files in os.walk(os.path.abspath(diretorio)):
         for file in files:
             data = pd.read_csv(f'{diretorio}{file}', sep=" ", header=None)
             
