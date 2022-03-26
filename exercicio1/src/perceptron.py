@@ -2,35 +2,44 @@ import numpy as np
 
 class Perceptron():
     def __init__(self, n_entradas, tx=0.5):
-        # pesos para bias + entradas
+        # inicia aleatoriamente os pesos para bias + entradas
         self.w = 2*np.random.rand(1 + n_entradas) - 1
+
+        # taxa de aprendizagem
         self.tx = tx
+        
+        # indica quantas vezes foi necessario processar o conjunto completo dos dados
+        # ate que os pesos sejam ajustados para acertar a previsao em todas as amostras
         self.epoca = 0
+
 
     # degrau bipolar
     def funcao_ativacao(self, u):
         return -1 if u <= 0 else 1
     
-    # dado array de entradas faz uma previsao de classificacao
+
+    # dado um array de entradas faz uma previsao de classificacao
     def prever(self, x):
         u = np.dot(x, self.w)
         return self.funcao_ativacao(u)
 
+
     # algoritmo de atualizacao de pesos da RNA
     def treinar(self, data):
-        
         # algoritmo so acaba qnd o erro em todas as amostras de treino = 0
         while True:
+            self.epoca += 1
             erro_epoca = 0
+            
             for i in data.index:
                 # X = variaveis explicativas
-                # Y = variavel resposta para instancia
+                # Y = variavel resposta da instancia
                 X = [x for x in data.loc[i, data.columns != 'y']]
                 Y = data['y'][i]
                 
                 # continua enquanto nao prever corretamente a instancia atual
                 while True:
-                    # y = previsao do amostra atual
+                    # y = previsao realizada para amostra atual
                     # Y = valor esperado
                     y = self.prever(X)
                     erro_amostra = Y - y
@@ -38,7 +47,7 @@ class Perceptron():
                         break
                         
                     # se valor previsto != esperado, atualiza os pesos
-                    # delta w = taxa aprendizagem * erro de previsao * vetor x de entradas
+                    # delta w = taxa aprendizagem * erro de previsao * vetor de entradas
                     delta_w = np.dot((self.tx * erro_amostra), X)
                     self.w += delta_w
                     erro_epoca += abs(erro_amostra)
@@ -46,5 +55,4 @@ class Perceptron():
             if erro_epoca == 0:
                 break
 
-            self.epoca += 1
         

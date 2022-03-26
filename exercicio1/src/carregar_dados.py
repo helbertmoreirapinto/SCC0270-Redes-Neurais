@@ -15,7 +15,7 @@ def load_data():
             arr = [1]
             for col in data:
                 for lin in data.iloc[col]:
-                    # xn
+                    # x[n]
                     arr.append(lin)
             # y
             arr.append(1 if file[0]=='y' else -1)
