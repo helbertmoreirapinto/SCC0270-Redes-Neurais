@@ -1,9 +1,12 @@
 import numpy as np
 
 class Perceptron():
-    def __init__(self, n_entradas, tx=0.5):
-        # inicia com zeros os pesos para bias + entradas
-        self.w = np.zeros(1 + n_entradas)
+    def __init__(self, n_entradas, seed, tx=0.5):
+        np.random.seed(seed)
+
+        # inicia randomicamente os pesos para bias + entradas
+        #self.w = np.zeros(1 + n_entradas)
+        self.w = 2*np.random.rand(1 + n_entradas)-1
 
         # taxa de aprendizagem
         self.tx = tx
