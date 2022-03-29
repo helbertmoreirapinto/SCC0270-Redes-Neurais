@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-def generate_dataframe(size=50, num_ruido=3):
+def gerar_dados(n=50, num_ruido=3):
     x = []
 
     x.append(np.array([
@@ -118,7 +118,7 @@ def generate_dataframe(size=50, num_ruido=3):
     # cria o dataframe de retorno
     dataframe = pd.DataFrame([],columns=col)
 
-    for n in range(size):
+    for ni in range(n):
         # seleciona um modelo randomicamente
         idx_sel = np.random.randint(len(x))
         sel_x = x[idx_sel]

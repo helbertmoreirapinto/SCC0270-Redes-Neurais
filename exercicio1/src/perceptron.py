@@ -26,7 +26,11 @@ class Perceptron():
         u = np.dot(x, self.w)
         return self.funcao_ativacao(u)
 
+    # função que avalia se saida é igual a desejada
+    def comparar(self, calculado, processado):
+        return calculado - processado
 
+    
     # algoritmo de atualizacao de pesos da RNA
     def treinar(self, data):
         # algoritmo so acaba qnd o erro em todas as amostras de treino = 0
@@ -45,7 +49,7 @@ class Perceptron():
                     # y = previsao realizada para amostra atual
                     # Y = valor esperado
                     y = self.prever(X)
-                    erro_amostra = Y - y
+                    erro_amostra = self.comparar(Y, y)
                     if erro_amostra == 0:
                         break
                         
