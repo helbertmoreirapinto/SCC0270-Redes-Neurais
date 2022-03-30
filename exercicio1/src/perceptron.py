@@ -4,8 +4,7 @@ class Perceptron():
     def __init__(self, n_entradas, seed, tx=0.5):
         np.random.seed(seed)
 
-        # inicia randomicamente os pesos para bias + entradas
-        #self.w = np.zeros(1 + n_entradas)
+        # inicia randomicamente [-1, 1] os pesos para bias + entradas
         self.w = 2*np.random.rand(1 + n_entradas)-1
 
         # taxa de aprendizagem
@@ -25,6 +24,7 @@ class Perceptron():
     def prever(self, x):
         u = np.dot(x, self.w)
         return self.funcao_ativacao(u)
+
 
     # função que avalia se saida é igual a desejada
     def comparar(self, calculado, processado):
