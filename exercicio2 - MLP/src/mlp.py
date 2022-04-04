@@ -1,21 +1,20 @@
 from numpy import exp, random
 import numpy as np
 
+
 def sigmoide(z):
     return 1 / (1 + exp(-z))
 
-
 def dsigmoide(z):
-    # return sigmoide(z) * (1 - sigmoide(z))
     return z * (1 - z)
-
 
 def funcao_custo(a, b):
     return a - b
 
+
+# classe que cria uma rede de perceptrons multicamadas
 class MLP():
     def __init__(self, camadas):
-        self.n_camadas = len(camadas)
         self.pesos = [random.randn(b,a) for a, b in zip(camadas[1:], camadas[:-1])]
         self.bias = [random.randn(1,a) for a in camadas[1:]]
         return
@@ -28,10 +27,10 @@ class MLP():
             a.append(u)
         return u, a
     
+
     # calcula os deltas e o nablaiente dos pesos
     def backpropagation(self, amostra, taxa, fa=sigmoide, dfa=dsigmoide):
         x, y = amostra
-        
         saida, a = self.feedforward(x, fa)
         erro = funcao_custo(y, saida)
 
@@ -49,18 +48,19 @@ class MLP():
 
         for i, b in enumerate(self.bias):
             b += (taxa * delta[i])
-        
+        return
+
     
     # dado um conjunto de treino, ajusta os pesos
-    def treino(self, amostras, taxa=0.5, lim_epocas=100):
+    def treino(self, amostras, taxa=0.5, lim_epocas=1000):
         for epoca in range(lim_epocas):
-            mse = 0
+            erro_epoca = []
             for amostra in amostras:
                 x, y = amostra
                 saida, _ = self.feedforward(x)
-                mse += np.sum(funcao_custo(y, saida)**2)
+                erro_epoca.append(funcao_custo(y, saida))
                 self.backpropagation(amostra, taxa=taxa)
-            
-            if epoca % 100 == 0:
-                print('Epoca: {:04d} | MSE: {:.3f}'.format(epoca, mse))
+            mse = np.sum(np.square(erro_epoca)) / len(erro_epoca)
+            if epoca % 1000 == 0:
+                print('Epoca: {:05d} | MSE: {:.8f}'.format(epoca, mse))
         return
