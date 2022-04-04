@@ -6,7 +6,8 @@ def sigmoide(z):
 
 
 def dsigmoide(z):
-    return sigmoide(z) * (1 - sigmoide(z))
+    # return sigmoide(z) * (1 - sigmoide(z))
+    return z * (1 - z)
 
 
 def funcao_custo(a, b):
@@ -15,8 +16,8 @@ def funcao_custo(a, b):
 class MLP():
     def __init__(self, camadas):
         self.n_camadas = len(camadas)
-        self.pesos = [2*random.rand(b,a)-1 for a, b in zip(camadas[1:], camadas[:-1])]
-        self.bias = [2*random.rand(1,a)-1 for a in camadas[1:]]
+        self.pesos = [random.randn(b,a) for a, b in zip(camadas[1:], camadas[:-1])]
+        self.bias = [random.randn(1,a) for a in camadas[1:]]
         return
     
     # dado um vetor de entrada, calcula a saida
@@ -60,6 +61,6 @@ class MLP():
                 mse += np.sum(funcao_custo(y, saida)**2)
                 self.backpropagation(amostra, taxa=taxa)
             
-            if epoca % 1000 == 0:
+            if epoca % 100 == 0:
                 print('Epoca: {:04d} | MSE: {:.3f}'.format(epoca, mse))
         return
