@@ -36,11 +36,10 @@ class MLP():
 
         # ajustar pesos e bias
         delta = [erro * dfa(saida)]
-
         for i in range(len(a)-1, 0, -1):
             nabla = delta[len(delta)-1].dot(self.pesos[i-1].T) * dfa(a[i-1])
             delta.append(nabla)
-        delta = delta[1::-1]
+        delta = delta[::-1][1:]
         
         for i, w in enumerate(self.pesos):
             if len(a[i].shape) == 1:
@@ -53,7 +52,7 @@ class MLP():
     
     # dado um conjunto de treino, ajusta os pesos
     def treino(self, amostras, taxa=0.5, lim_epocas=100):
-        for epoca in range(1, lim_epocas+1):
+        for epoca in range(lim_epocas):
             mse = 0
             for amostra in amostras:
                 x, y = amostra
