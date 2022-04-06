@@ -38,7 +38,6 @@ class MLP():
         erro = funcao_custo(y, saida)
 
         # ajustar pesos e bias
-
         # calcular os deltas da camada de saida para a camada de entrada
         delta = [erro * dfa(saida)]
         for i in range(len(a)-1, 0, -1):
@@ -63,10 +62,11 @@ class MLP():
 
     
     # dado um conjunto de treino, ajusta os pesos
-    def treino(self, amostras, taxa=0.5, lim_epocas=1000, funcao_custo=diferenca_vetorial):
+    def treino(self, amostras, lim_erro=1e-3, taxa=0.5, funcao_custo=diferenca_vetorial):
         errolist = []
+        epoca = 0
 
-        for epoca in range(lim_epocas):
+        while True:
             erro_epoca = []
 
             for amostra in amostras:
@@ -79,8 +79,15 @@ class MLP():
             mse = np.sum(np.square(erro_epoca)) / len(erro_epoca)
             errolist.append(mse)
             
-            # exibe 20 prints com o erro quadratico medio da epoca
-            if epoca % (lim_epocas/20) == 0:
+            # a cada 5mil epocas exibe o quadratico medio da epoca
+            if epoca % 5000 == 0:
                 print('Epoca: {:05d} | MSE: {:.8f}'.format(epoca, mse))
-        
+            
+            if mse < lim_erro:
+                break
+            
+            epoca += 1
+            
+            
+        print('Epoca: {:05d} | MSE: {:.8f}'.format(epoca, mse))
         return errolist
