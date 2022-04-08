@@ -15,7 +15,11 @@ def diferenca_vetorial(a, b):
 # classe que cria uma rede de perceptrons multicamadas
 class MLP():
     # camadas:list contem o numero de neuronios por camada
-    def __init__(self, camadas):
+    def __init__(self, camadas, seed=None):
+        # configurando seed
+        if seed is not None:
+            np.random.seed(seed)
+        
         # inicia randomicamente (media=0 e dp=1) os pesos dos neuronios e dos bias
         self.pesos = [random.randn(b,a) for a, b in zip(camadas[1:], camadas[:-1])]
         self.bias = [random.randn(1,a) for a in camadas[1:]]
@@ -76,7 +80,7 @@ class MLP():
                 self.backpropagation(amostra, taxa=taxa)
             
             # erro quadratico medio
-            mse = np.sum(np.square(erro_epoca)) / len(erro_epoca)
+            mse = np.sum(np.square(erro_epoca)) / 2
             errolist.append(mse)
             
             # a cada 5mil epocas exibe o quadratico medio da epoca
