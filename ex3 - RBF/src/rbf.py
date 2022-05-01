@@ -84,6 +84,5 @@ class RBF():
                     self.pesos_saida = n
 
             epoca += 1
-            # print(epoca)
             if(epoca == max_epocas):
                 break
